@@ -11,10 +11,21 @@ export const home = async (req, res) => {
   }
 };
 
-export const search = (req, res) => {
+export const search = async (req, res) => {
   const {
     query: { term: searchingBy }
   } = req;
+  let videos = [];
+  try {
+    videos = await Video.find({
+      $or: [
+        { title: { $regex: searchingBy, $options: "i" } },
+        { description: { $regex: searchingBy, $options: "i" } }
+      ]
+    }).sort({ _id: -1 });
+  } catch (error) {
+    console.log(error);
+  }
   res.render("search", { pageTitle: "Search", searchingBy, videos });
 };
 
