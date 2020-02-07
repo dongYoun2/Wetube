@@ -12,10 +12,24 @@
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
     .header__column {
-      i {
-        // border: 1px solid white;
-        color: white;
-        font-size: 40px;
+      // border: 1px solid white;
+      &:first-child {
+        // border: 1px solid red;
+        justify-self: start;
+        margin-left: 10px;
+        a {
+          display: flex;
+          align-items: center;
+          font-size: 20px;
+          font-weight: 600;
+          color: white;
+          text-transform: uppercase;
+        }
+        i {
+          font-size: 30px;
+          margin-right: 5px;
+          color: white;
+        }
       }
       &:nth-child(2) {
         // border: 1px solid white;
@@ -25,6 +39,7 @@
       &:last-child {
         // border: 1px solid white;
         justify-self: end;
+        margin-right: 10px;
       }
       ul {
         display: flex;
