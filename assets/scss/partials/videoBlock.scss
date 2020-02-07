@@ -1,0 +1,14 @@
+.videoBlock {
+  // border: 1px solid red;
+  margin: 0 auto; // not really sure
+  video {
+    background-color: $black;
+    margin-bottom: 10px;
+    max-width: 100%;
+  }
+  .videoBlock__title {
+    font-size: 18px;
+    font-weight: 300;
+    margin-bottom: 10px;
+  }
+}

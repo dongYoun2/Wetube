@@ -12,36 +12,48 @@ body {
 
 main {
   width: 100%;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   min-height: 70vh;
 }
 
 button,
-input {
+input:not([type="file"]),
+textarea,
+.fileUpload {
   padding: 7px 10px;
   width: 100%;
+  border: none;
   border-radius: 5px;
   font-size: 14px;
   color: $black;
   font-weight: 600;
+  background-color: white;
+  max-width: 320px;
+  resize: none;
   &::placeholder {
     font-weight: 300;
     color: rgba(0, 0, 0, 0.7);
   }
-  // &:-webkit-autofill,
-  // &:-webkit-autofill:hover,
-  // &:-webkit-autofill:focus {
-  //   -webkit-text-fill-color: $letter-white;
-  //   box-shadow: 0 0 0px 1000px $black inset;
+  // &:-webkit-autofill {
+  //   // -webkit-text-fill-color: black;
+  //   font-weight: 600;
+  //   box-shadow: 0 0 0px 1000px #ffffff inset;
   //   transition: background-color 5000s ease-in-out 0s;
   // }
 }
 
 button {
-  cursor: pointer;
+  border: none;
+  background-color: $button-color;
+  color: white;
 }
 
+button.delete {
+  background-color: $dark-red;
+}
+
+button,
 input[type="submit"] {
   cursor: pointer;
 }
