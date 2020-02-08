@@ -1,11 +1,13 @@
 .video-detail__container {
-  //   border: 1px solid red;
+  // border: 1px solid red;
+  margin: 0 7px;
+  padding: 0 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
   video {
     max-width: 100%;
-    background-color: $black;
+    background-color: $dark-grey;
   }
   .video__info {
     width: 100%;

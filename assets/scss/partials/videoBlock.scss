@@ -1,14 +1,26 @@
 .videoBlock {
-  // border: 1px solid red;
-  margin: 0 auto; // not really sure
+  // border: 1px solid blue;
+
+  // max-width: 100%;
+  // margin: 0 auto; // not really sure
   video {
-    background-color: $black;
+    // border: 1px solid red;
+    background-color: $dark-grey;
+
     margin-bottom: 10px;
     max-width: 100%;
+
+    max-height: 100px;
   }
   .videoBlock__title {
+    // border: 1px solid red;
+    max-width: 100%;
     font-size: 18px;
     font-weight: 300;
     margin-bottom: 10px;
+    max-height: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
