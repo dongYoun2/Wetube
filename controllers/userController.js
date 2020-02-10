@@ -13,8 +13,8 @@ export const postJoin = async (req, res, next) => {
 
   if (password !== password2) {
     res.status(400);
-    // res.render("join", { pageTitle: "Join" });
-    res.redirect(routes.join); // above, Nico code. This, my code.
+    res.render("join", { pageTitle: "Join" });
+    // res.redirect(routes.join); // above, Nico code. This, my code.
   } else {
     try {
       const user = await User({
@@ -122,11 +122,37 @@ export const userDetail = async (req, res) => {
     res.render("userDetail", { pageTitle: "User Detail", user });
   } catch (error) {
     // console.log(error);
-    res.redirect(routes.home);
+
+    res.redirect(routes.me);
   }
 };
 
 export const getEditProfile = (req, res) =>
   res.render("editProfile", { pageTitle: "Edit Profile" });
+
+export const postEditProfile = async (req, res) => {
+  const {
+    body: { name, email },
+    file
+  } = req;
+  // console.log(name, email, file);
+  // console.log(req.user);
+  try {
+    await User.findByIdAndUpdate(req.user._id, {
+      name,
+      email,
+      avatarUrl: file ? file.path : req.user.avatarUrl
+    });
+
+    req.user.name = name;
+    req.user.email = email;
+
+    res.redirect(routes.me);
+  } catch (error) {
+    console.log(error);
+    // res.redirect(routes.editProfile);  //이건 안 좋은가??
+    res.render("editProfile", { pageTitle: "Edit Profile" });
+  }
+};
 export const changePassword = (req, res) =>
   res.render("changePassword", { pageTitle: "Change Password" });
