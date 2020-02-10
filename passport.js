@@ -26,8 +26,8 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
-      // callbackURL: `http://localhost:3001${routes.facebookCallback}`,
-      callbackURL: `https://chilly-rat-92.localtunnel.me${routes.facebookCallback}`,
+      callbackURL: `http://localhost:3001${routes.facebookCallback}`,
+      // callbackURL: `https://green-warthog-47.localtunnel.me${routes.facebookCallback}`,
       profileFields: ["id", "displayName", "photos", "email"],
       scope: ["public_profile", "email"]
     },
