@@ -13,7 +13,8 @@ export const postJoin = async (req, res, next) => {
 
   if (password !== password2) {
     res.status(400);
-    res.render("join", { pageTitle: "Join" });
+    // res.render("join", { pageTitle: "Join" });
+    res.redirect(routes.join); // above, Nico code. This, my code.
   } else {
     try {
       const user = await User({
@@ -21,6 +22,7 @@ export const postJoin = async (req, res, next) => {
         email
       });
       await User.register(user, password);
+      console.log(user);
       next();
     } catch (error) {
       console.log(error);
@@ -41,21 +43,23 @@ export const githubLogin = passport.authenticate("github");
 
 export const githubVerifyCallback = async (_, __, profile, cb) => {
   const {
-    _json: { id, avatar_url, name, email }
+    _json: { id, avatar_url: avatarUrl, name, email }
   } = profile;
   try {
     const user = await User.findOne({ email });
     if (user) {
       user.githubId = id;
       user.save();
+      // console.log(user);
       return cb(null, user);
     }
     const newUser = await User.create({
       email,
       name,
       githubId: id,
-      avatarUrl: avatar_url
+      avatarUrl
     });
+    // console.log(user);
     return cb(null, newUser);
   } catch (error) {
     return cb(error);
@@ -76,5 +80,10 @@ export const editProfile = (req, res) =>
   res.render("editProfile", { pageTitle: "Edit Profile" });
 export const changePassword = (req, res) =>
   res.render("changePassword", { pageTitle: "Change Password" });
+
+export const getMe = (req, res) => {
+  res.render("userDetail", { pageTitle: "User Detail", user: req.user });
+};
+
 export const userDetail = (req, res) =>
   res.render("userDetail", { pageTitle: "User Detail" });
