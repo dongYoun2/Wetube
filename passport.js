@@ -1,7 +1,11 @@
 import passport from "passport";
 import GithubStrategy from "passport-github";
+import FacebookStrategy from "passport-facebook";
 import User from "./models/User";
-import { githubVerifyCallback } from "./controllers/userController";
+import {
+  githubVerifyCallback,
+  facebookVerifyCallback
+} from "./controllers/userController";
 import routes from "./routes";
 
 passport.use(User.createStrategy());
@@ -14,6 +18,20 @@ passport.use(
       callbackURL: `http://localhost:3001${routes.githubCallback}`
     },
     githubVerifyCallback
+  )
+);
+
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.FACEBOOK_APP_ID,
+      clientSecret: process.env.FACEBOOK_APP_SECRET,
+      // callbackURL: `http://localhost:3001${routes.facebookCallback}`,
+      callbackURL: `https://chilly-rat-92.localtunnel.me${routes.facebookCallback}`,
+      profileFields: ["id", "displayName", "photos", "email"],
+      scope: ["public_profile", "email"]
+    },
+    facebookVerifyCallback
   )
 );
 

@@ -66,7 +66,23 @@ export const githubVerifyCallback = async (_, __, profile, cb) => {
   }
 };
 
-export const postGithubLogIn = passport.authenticate("github", {
+export const postGithubLogin = passport.authenticate("github", {
+  failureRedirect: routes.login,
+  successRedirect: routes.home
+});
+
+export const facebookLogin = passport.authenticate("facebook");
+
+export const facebookVerifyCallback = (
+  accessToken,
+  refreshToken,
+  profile,
+  cb
+) => {
+  console.log(accessToken, refreshToken, profile, cb);
+};
+
+export const postFacebookLogin = passport.authenticate("facebook", {
   failureRedirect: routes.login,
   successRedirect: routes.home
 });
@@ -85,5 +101,14 @@ export const getMe = (req, res) => {
   res.render("userDetail", { pageTitle: "User Detail", user: req.user });
 };
 
-export const userDetail = (req, res) =>
-  res.render("userDetail", { pageTitle: "User Detail" });
+export const userDetail = async (req, res) => {
+  const {
+    params: { id }
+  } = req;
+  try {
+    const user = await User.findById(id);
+    res.render("userDetail", { pageTitle: "User Detail" }, user);
+  } catch (error) {
+    res.redirect(routes.home);
+  }
+};

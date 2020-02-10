@@ -8,7 +8,9 @@ import {
   postLogin,
   getLogin,
   githubLogin,
-  postGithubLogIn,
+  postGithubLogin,
+  facebookLogin,
+  postFacebookLogin,
   getMe
 } from "../controllers/userController";
 import { onlyPublic, onlyPrivate } from "../middlewares";
@@ -26,7 +28,10 @@ globalRouter.get(routes.search, search);
 globalRouter.get(routes.logout, onlyPrivate, logout);
 
 globalRouter.get(routes.github, githubLogin);
-globalRouter.get(routes.githubCallback, postGithubLogIn);
+globalRouter.get(routes.githubCallback, postGithubLogin);
+
+globalRouter.get(routes.facebook, facebookLogin);
+globalRouter.get(routes.facebookCallback, postFacebookLogin);
 
 globalRouter.get(routes.me, getMe);
 
