@@ -23,7 +23,7 @@ export const postJoin = async (req, res, next) => {
         avatarUrl: process.env.DEFAULT_AVATAR_URL
       });
       await User.register(user, password);
-      console.log(user);
+      // console.log(user);
       next();
     } catch (error) {
       console.log(error);
@@ -118,7 +118,7 @@ export const logout = (req, res) => {
 
 export const getMe = (req, res) => {
   res.render("userDetail", { pageTitle: "User Detail", user: req.user });
-  console.log(req.user);
+  // console.log(req.user);
 };
 
 export const userDetail = async (req, res) => {
@@ -146,13 +146,14 @@ export const postEditProfile = async (req, res) => {
   } = req;
   // console.log(name, email, file);
   // console.log(req.user);
+  console.log(file);
   try {
     await User.findByIdAndUpdate(req.user.id, {
       name,
       email,
-      avatarUrl: file ? file.path : req.user.avatarUrl
+      avatarUrl: file ? `/${file.path}` : req.user.avatarUrl
     });
-
+    console.log(req.user);
     // req.user.name = name;
     // req.user.email = email;
 
