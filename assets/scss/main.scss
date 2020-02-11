@@ -58,3 +58,8 @@ button,
 input[type="submit"] {
   cursor: pointer;
 }
+
+input[readonly] {
+  font-weight: 500;
+  opacity: 0.6;
+}

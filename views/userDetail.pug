@@ -9,5 +9,6 @@ block content
             .user-profile__buttons
                 a(href=`/users${routes.editProfile}`)
                     button ✏️ Edit Profile
-                a(href=`/users${routes.changePassword}`)
-                    button 🔐 Change Password
+                if user.githubId === undefined && user.facebookId === undefined
+                    a(href=`/users${routes.changePassword}`)
+                        button 🔐 Change Password
