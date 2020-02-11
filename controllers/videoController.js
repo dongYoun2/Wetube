@@ -69,8 +69,13 @@ export const getEditVideo = async (req, res) => {
   } = req;
   try {
     const video = await Video.findById(id);
-    res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
+    if (video.creator.toString() !== req.user.id) {
+      throw Error();
+    } else {
+      res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
+    }
   } catch (error) {
+    console.log(error);
     res.redirect(routes.home);
   }
 };
@@ -86,6 +91,7 @@ export const postEditVideo = async (req, res) => {
     // await Video.findOneAndUpdate({ _id: id }, { title, description });
     res.redirect(routes.videoDetail(id));
   } catch (error) {
+    console.log(error);
     res.redirect(routes.home);
   }
 };
@@ -95,7 +101,15 @@ export const deleteVideo = async (req, res) => {
     params: { id }
   } = req;
   try {
-    await Video.findByIdAndRemove(id);
+    const video = await Video.findById(id);
+    if (video.creator.toString() !== req.user.id) {
+      throw Error();
+    } else {
+      video.remove();
+      // video.save(); -> video.remove() 하면 이 코드 수행할 필요 X
+
+      // await Video.findByIdAndRemove(id);
+    }
   } catch (error) {
     console.log(error);
   }
