@@ -7,6 +7,13 @@ const currentTime = document.getElementById("jsCurrentTime");
 const totalTime = document.getElementById("jsTotalTime");
 const volumeRange = document.getElementById("jsVolume");
 
+// const registerView = () => {
+//   const videoId = window.location.href.split("/videos/")[1];
+//   fetch(`/api/${videoId}/view`, {
+//     method: "POST"
+//   });
+// };
+
 function getVolumeIconString(volumeValue) {
   if (volumeValue >= 0.8) return '<i class="fas fa-volume-up"></i>';
   if (volumeValue >= 0.4) return '<i class="fas fa-volume-down"></i>';
@@ -104,6 +111,7 @@ function handlePlayClick() {
 }
 
 function handleEnded() {
+  // registerView();
   videoPlayer.currentTime = 0;
   playBtn.innerHTML = '<i class="fas fa-play"></i>';
   clearInterval(playTimer);
@@ -119,27 +127,27 @@ function handleDrag(e) {
   console.log(videoPlayer.volume);
 }
 
-function setVideoSize(event) {
+async function setVideoSize(event) {
   const width = event.target.videoWidth;
   const height = event.target.videoHeight;
+  console.log(event);
   let ratio;
-
   if (width < height) {
     ratio = (width / height).toFixed(2);
   } else {
     ratio = (height / width).toFixed(2);
   }
   const videoResolution = ratio * 100;
-  videoContainer.style.paddingBottom = `${videoResolution}%`;
+  videoContainer.style.paddingBottom = await `${videoResolution}%`;
 }
 
 function init() {
   videoPlayer.volume = 0.5;
   videoPlayer.addEventListener("loadedmetadata", setVideoSize);
+  videoPlayer.addEventListener("loadedmetadata", setTotalTime);
   playBtn.addEventListener("click", handlePlayClick);
   volumeBtn.addEventListener("click", handleVolumeClick);
   fullScrnBtn.addEventListener("click", goFullScreen);
-  videoPlayer.addEventListener("loadedmetadata", setTotalTime);
   videoPlayer.addEventListener("ended", handleEnded);
   volumeRange.addEventListener("input", handleDrag);
 }

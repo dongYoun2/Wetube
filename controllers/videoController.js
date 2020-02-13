@@ -55,6 +55,8 @@ export const videoDetail = async (req, res) => {
   } = req;
   try {
     const video = await Video.findById(id).populate("creator");
+    video.views += 1;
+    await video.save();
     // console.log(video);
     res.render("videoDetail", { pageTitle: video.title, video });
   } catch (error) {
@@ -118,18 +120,18 @@ export const deleteVideo = async (req, res) => {
 
 // Register Video View
 
-export const postRegisterView = async (req, res) => {
-  const {
-    params: { id }
-  } = req;
-  try {
-    const video = await Video.findById(id);
-    video.views += 1;
-    await video.save();
-    res.status(200);
-  } catch (error) {
-    res.status(400);
-  } finally {
-    res.end();
-  }
-};
+// export const postRegisterView = async (req, res) => {
+//   const {
+//     params: { id }
+//   } = req;
+//   try {
+//     const video = await Video.findById(id);
+//     video.views += 1;
+//     await video.save();
+//     res.status(200);
+//   } catch (error) {
+//     res.status(400);
+//   } finally {
+//     res.end();
+//   }
+// };
