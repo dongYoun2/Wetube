@@ -105,13 +105,31 @@ export const deleteVideo = async (req, res) => {
     if (video.creator.toString() !== req.user.id) {
       throw Error();
     } else {
-      video.remove();
+      // video.remove();
       // video.save(); -> video.remove() 하면 이 코드 수행할 필요 X
 
-      // await Video.findByIdAndRemove(id);
+      await Video.findByIdAndRemove(id);
     }
   } catch (error) {
     console.log(error);
   }
   res.redirect(routes.home);
+};
+
+// Register Video View
+
+export const postRegisterView = async (req, res) => {
+  const {
+    params: { id }
+  } = req;
+  try {
+    const video = await Video.findById(id);
+    video.views += 1;
+    await video.save();
+    res.status(200);
+  } catch (error) {
+    res.status(400);
+  } finally {
+    res.end();
+  }
 };

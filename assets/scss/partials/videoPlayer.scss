@@ -5,10 +5,17 @@
       opacity: 1;
     }
   }
+  &:fullscreen {
+    video {
+      max-height: 100%;
+    }
+  }
   video {
     // border: 3px solid red;
     width: 100%;
     max-width: 100%;
+    max-height: 500px;
+    // height: 500px;
     //아래 두 줄 내 코드
     // width: 1200px;
     // background-color: $dark-grey;
