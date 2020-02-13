@@ -119,8 +119,23 @@ function handleDrag(e) {
   console.log(videoPlayer.volume);
 }
 
+function setVideoSize(event) {
+  const width = event.target.videoWidth;
+  const height = event.target.videoHeight;
+  let ratio;
+
+  if (width < height) {
+    ratio = (width / height).toFixed(2);
+  } else {
+    ratio = (height / width).toFixed(2);
+  }
+  const videoResolution = ratio * 100;
+  videoContainer.style.paddingBottom = `${videoResolution}%`;
+}
+
 function init() {
   videoPlayer.volume = 0.5;
+  videoPlayer.addEventListener("loadedmetadata", setVideoSize);
   playBtn.addEventListener("click", handlePlayClick);
   volumeBtn.addEventListener("click", handleVolumeClick);
   fullScrnBtn.addEventListener("click", goFullScreen);
