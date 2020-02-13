@@ -2,13 +2,30 @@
   //   border: 1px solid red;
   width: 100%;
   max-width: 500px;
-  margin-bottom: 40px;
+  margin-bottom: 35px;
   text-align: center;
 
   video {
     // border: 1px solid red;
+    display: none;
     background-color: $black;
     width: 100%;
     margin-bottom: 20px;
+  }
+  button {
+    display: none;
+  }
+  // .show {
+  //   display: inline;
+  // }
+  i {
+    // border: 1px solid red;
+    cursor: pointer;
+    // display: block;
+    font-size: 40px;
+    color: $black;
+  }
+  .stop-record-btn {
+    background-color: $dark-red;
   }
 }

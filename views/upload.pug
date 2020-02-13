@@ -4,6 +4,8 @@ block content
     .form-container
         .record-container#jsRecordContainer
             video#jsVideoPreview
+            span#jsCameraBtn
+                i.fas.fa-camera 
             button#jsRecordBtn Start Recording
         form(action=`/videos${routes.upload}` method="post" enctype="multipart/form-data")
             div.fileUpload
