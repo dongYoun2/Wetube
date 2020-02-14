@@ -22,15 +22,24 @@ block content
                 |uploaded by 
                 a(href=routes.userDetail(video.creator.id))=video.creator.name
         .video__comments
+            .my-comment
+                img.u-avatar(src=user.avatarUrl)
+                div.comment-form-container
+                    form.add__Comment#jsAddComment
+                        textarea(placeholder="Write a comment")
+                        input(type="submit" value="Post")
             if video.comments.length === 1
-                span.video__comment-number 1 comment
+                span.video__comment-number#jsCommentNumber 1 comment
             else
-                span.video__comment-number #{video.comments.length} comments
-            form.add__Comment#jsAddComment
-                input(type="text" placeholder="Add a comment")
-            ul.video__comments-list
-                each comment in video.comments
-                    li 
-                        span=comment.text
+                span.video__comment-number#jsCommentNumber #{video.comments.length} comments
+            ul.video__comments-list#jsCommentList
+                each comment in video.comments.reverse()
+                    li     
+                        a(href=routes.userDetail(comment.creator.id))
+                            img.u-avatar(src=comment.creator.avatarUrl)
+                        pre
+                            a(href=routes.userDetail(comment.creator.id))=comment.creator.name
+                            | 
+                            | #{comment.text} 
 
                 //- width="1304" height="748"

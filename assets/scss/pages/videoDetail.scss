@@ -1,9 +1,9 @@
 .video-detail__container {
   // border: 1px solid red;
-  margin: 0 7px;
-  padding: 0 5px;
   display: flex;
   flex-direction: column;
+  margin: 0 7px;
+  padding: 0 5px;
   align-items: center;
   video {
     width: 100%;
@@ -46,26 +46,83 @@
   .video__comments {
     // border: 1px solid blue;
     margin-top: 25px;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .my-comment {
+      // border: 1px solid red;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+      max-width: 1000px;
+      height: 100px;
+      .comment-form-container {
+        // border: 1px solid blue;
+        height: 100%;
+        width: 100%;
+        .add__Comment {
+          height: 90%;
+          display: grid;
+          grid-template-columns: 10fr 1fr;
+        }
+        textarea {
+          max-width: 1000px;
+          font-size: 15px;
+        }
+        input[type="submit"] {
+          max-width: 1000px;
+          background-color: $button-color;
+          color: white;
+        }
+      }
+    }
+    .u-avatar {
+      height: 60px;
+      min-width: 60px;
+      margin-right: 10px;
+    }
     .video__comment-number {
+      margin-top: 30px;
       font-size: 18px;
     }
     .add__comment {
-      margin-top: 25px;
       width: 100%;
       input {
         width: 100%;
       }
     }
     .video__comments-list {
-      margin-top: 50px;
+      width: 100%;
+      max-width: 780px;
+      margin-top: 20px;
       li {
-        background-color: #3498db;
-        color: white;
+        display: grid;
+        grid-template-columns: 1fr 10fr;
+        align-items: center;
+        grid-gap: 5px;
+        &:not(:last-child) {
+          margin-bottom: 15px;
+        }
+      }
+
+      pre {
+        font-size: 16px;
+        word-break: break-all;
+        white-space: pre-line;
+        font-size: 17px;
+        background-color: rgba(0, 0, 0, 0.1);
+        color: $black;
         padding: 15px;
         border-radius: 20px;
         border-bottom-left-radius: 0px;
-        &:not(:last-child) {
-          margin-bottom: 15px;
+        a {
+          display: block;
+          color: black;
+          font-weight: 500;
+          font-size: 16px;
+          opacity: 1;
         }
       }
     }

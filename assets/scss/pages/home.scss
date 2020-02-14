@@ -1,10 +1,11 @@
 .home-videos {
   // border: 1px solid purple;
+  width: 100%;
   display: grid;
   padding: 5px;
   margin: 7px;
-  grid-template-columns: repeat(6, minmax(150px, 1fr));
-  grid-gap: 30px;
+  grid-template-columns: repeat(6, minmax(9%, 1fr));
+  grid-gap: 2%;
   .videoBlock:first-child,
   .videoBlock:nth-child(2) {
     grid-column: span 3;

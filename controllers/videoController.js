@@ -1,5 +1,6 @@
 import routes from "../routes";
 import Video from "../models/Video";
+import User from "../models/User";
 import Comment from "../models/Comment";
 
 export const home = async (req, res) => {
@@ -57,16 +58,23 @@ export const postUpload = async (req, res) => {
 
 export const videoDetail = async (req, res) => {
   const {
-    params: { id }
+    params: { id },
+    user
   } = req;
   try {
     const video = await Video.findById(id)
       .populate("creator")
-      .populate("comments");
+      .populate({
+        path: "comments",
+        populate: {
+          path: "creator",
+          model: User
+        }
+      });
     video.views += 1;
     await video.save();
     console.log(video);
-    res.render("videoDetail", { pageTitle: video.title, video });
+    res.render("videoDetail", { pageTitle: video.title, video, user });
   } catch (error) {
     console.log(error);
     res.redirect(routes.home);
@@ -153,6 +161,7 @@ export const postAddComment = async (req, res) => {
     user
   } = req;
   try {
+    console.log(req);
     if (!user) {
       // login 안 된 경우
       console.log("❌유저가 로그인 안 하고 댓글을 달려고 합니다");
