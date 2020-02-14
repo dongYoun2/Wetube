@@ -106,7 +106,7 @@ function handlePlayClick() {
     videoPlayer.pause();
     playBtn.innerHTML = '<i class="fas fa-play"></i>';
     clearInterval(playTimer);
-    console.log(playTimer);
+    // console.log(playTimer);
   }
 }
 
@@ -124,13 +124,13 @@ function handleDrag(e) {
   videoPlayer.muted = false;
   videoPlayer.volume = value;
   volumeBtn.innerHTML = getVolumeIconString(value);
-  console.log(videoPlayer.volume);
+  // console.log(videoPlayer.volume);
 }
 
 async function setVideoSize(event) {
   const width = event.target.videoWidth;
   const height = event.target.videoHeight;
-  console.log(event);
+  // console.log(event);
   let ratio;
   if (width < height) {
     ratio = (width / height).toFixed(2);

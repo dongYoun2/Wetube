@@ -119,7 +119,7 @@ export const logout = (req, res) => {
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).populate("videos");
-    console.log(user);
+    // console.log(user);
     res.render("userDetail", { pageTitle: "User Detail", user });
   } catch (error) {
     // console.log(error);

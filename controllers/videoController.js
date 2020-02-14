@@ -1,5 +1,6 @@
 import routes from "../routes";
 import Video from "../models/Video";
+import Comment from "../models/Comment";
 
 export const home = async (req, res) => {
   try {
@@ -12,6 +13,11 @@ export const home = async (req, res) => {
 };
 
 export const search = async (req, res) => {
+  console.log(req.body);
+  console.log(req.params);
+  console.log(req.query);
+  console.log(req.user);
+
   const {
     query: { term: searchingBy }
   } = req;
@@ -54,10 +60,12 @@ export const videoDetail = async (req, res) => {
     params: { id }
   } = req;
   try {
-    const video = await Video.findById(id).populate("creator");
+    const video = await Video.findById(id)
+      .populate("creator")
+      .populate("comments");
     video.views += 1;
     await video.save();
-    // console.log(video);
+    console.log(video);
     res.render("videoDetail", { pageTitle: video.title, video });
   } catch (error) {
     console.log(error);
@@ -135,3 +143,32 @@ export const deleteVideo = async (req, res) => {
 //     res.end();
 //   }
 // };
+
+// Add Comment
+
+export const postAddComment = async (req, res) => {
+  const {
+    params: { id },
+    body: { comment },
+    user
+  } = req;
+  try {
+    if (!user) {
+      // login 안 된 경우
+      console.log("❌유저가 로그인 안 하고 댓글을 달려고 합니다");
+      return;
+    }
+    const video = await Video.findById(id);
+    const newComment = await Comment.create({
+      text: comment,
+      creator: user.id
+    });
+    video.comments.push(newComment.id);
+    video.save();
+  } catch (error) {
+    res.status(400);
+    console.log(error);
+  } finally {
+    res.end();
+  }
+};
