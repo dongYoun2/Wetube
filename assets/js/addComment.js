@@ -1,5 +1,4 @@
 import axios from "axios";
-import { IgnorePlugin } from "webpack";
 
 const addCommentForm = document.getElementById("jsAddComment");
 const commentList = document.getElementById("jsCommentList");
@@ -31,7 +30,7 @@ const addComment = comment => {
   anchor2.innerText = me.name;
 
   pre.appendChild(anchor2);
-  pre.innerHTML += comment;
+  pre.innerHTML += `\n${comment}`;
 
   li.appendChild(anchor1);
   li.appendChild(pre);
