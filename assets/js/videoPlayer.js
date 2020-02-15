@@ -127,18 +127,17 @@ function handleDrag(e) {
   // console.log(videoPlayer.volume);
 }
 
-async function setVideoSize(event) {
+function setVideoSize(event) {
   const width = event.target.videoWidth;
   const height = event.target.videoHeight;
   // console.log(event);
-  let ratio;
-  if (width < height) {
-    ratio = (width / height).toFixed(2);
-  } else {
-    ratio = (height / width).toFixed(2);
+  const ratio = height / width;
+
+  if (ratio <= 0.63) {
+    const videoResolution = (ratio * 100).toFixed(2);
+    videoContainer.style.paddingBottom = `${videoResolution}%`;
+    // console.log(videoResolution);
   }
-  const videoResolution = ratio * 100;
-  videoContainer.style.paddingBottom = await `${videoResolution}%`;
 }
 
 function init() {

@@ -1,0 +1,23 @@
+.search__header {
+  margin: 20px;
+  h3,
+  h5 {
+    padding: 0 20px;
+    font-size: 1.25em;
+    font-weight: 400;
+    margin: 7px;
+  }
+  h5 {
+    margin: 30px;
+    text-align: center;
+    font-size: 1.5em;
+  }
+}
+
+.search__videos {
+  display: grid;
+  padding: 5px;
+  margin: 0 7px 7px 7px;
+  grid-template-columns: repeat(4, minmax(10%, 1fr));
+  grid-gap: 2%;
+}

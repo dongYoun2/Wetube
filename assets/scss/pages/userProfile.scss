@@ -1,9 +1,4 @@
 .user-profile {
-  //   border: 1px solid red;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
   .user-profile__header {
     // border: 1px solid blue;
     display: flex;
@@ -12,7 +7,7 @@
     margin-bottom: 18px;
     .profile__username {
       // border: 1px solid purple;
-      font-size: 28px;
+      font-size: 1.75em;
       margin-top: 18px;
     }
   }

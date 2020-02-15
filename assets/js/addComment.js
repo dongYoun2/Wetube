@@ -53,4 +53,5 @@ function init() {
 
 if (addCommentForm) {
   init();
+  console.log(data);
 }

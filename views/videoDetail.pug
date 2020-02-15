@@ -23,7 +23,10 @@ block content
                 a(href=routes.userDetail(video.creator.id))=video.creator.name
         .video__comments
             .my-comment
-                img.u-avatar(src=user.avatarUrl)
+                if user
+                    img.u-avatar(src=user.avatarUrl)
+                else
+                    img.u-avatar(src="/static/avatarURL_default.png")
                 div.comment-form-container
                     form.add__Comment#jsAddComment
                         textarea(placeholder="Write a comment")
@@ -41,5 +44,6 @@ block content
                             a(href=routes.userDetail(comment.creator.id))=comment.creator.name
                             | 
                             | #{comment.text} 
-
+    script(type="text/javascript").
+        let data = JSON.stringify(user)
                 //- width="1304" height="748"

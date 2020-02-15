@@ -10,10 +10,11 @@ block content
             .user-profile__buttons
                 a(href=`/users${routes.editProfile}`)
                     button ✏️ Edit Profile
-                if user.githubId === undefined && user.facebookId === undefined
+                //- if user.githubId === undefined && user.facebookId === undefined
+                if !user.githubId && !user.facebookId
                     a(href=`/users${routes.changePassword}`)
                         button 🔐 Change Password
-        .home-videos
+        .search__videos
             each item in user.videos
                 +videoBlock({
                     id: item.id,

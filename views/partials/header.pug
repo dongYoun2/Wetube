@@ -3,10 +3,10 @@ header.header
         .header__column
             a(href=routes.home)
                 i.fab.fa-youtube
-                | wetube
+                span wetube
         .header__column
             form(action=routes.search, methoud="get")
-                input(tpye="text", placeholder="Search by term..", name="term")
+                input#jsSearch(tpye="text", placeholder="Video Search 🔎", name="term")
         .header__column
             ul
                 if !loggedUser

@@ -1,24 +1,18 @@
 .home-videos {
   // border: 1px solid purple;
-  width: 100%;
+  // width: 100%;
   display: grid;
   padding: 5px;
-  margin: 7px;
-  grid-template-columns: repeat(6, minmax(9%, 1fr));
+  margin: 0 7px 7px 7px;
+  grid-template-columns: repeat(6, minmax(10%, 1fr));
   grid-gap: 2%;
   .videoBlock:first-child,
   .videoBlock:nth-child(2) {
     grid-column: span 3;
-    video {
-      max-height: 328px;
-    }
   }
   .videoBlock:nth-child(3),
   .videoBlock:nth-child(4),
   .videoBlock:nth-child(5) {
     grid-column: span 2;
-    video {
-      max-height: 213px;
-    }
   }
 }

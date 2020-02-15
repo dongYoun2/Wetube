@@ -1,27 +1,26 @@
 .videoBlock {
   // border: 1px solid blue;
-
-  // max-width: 100%;
-  // margin: 0 auto; // not really sure
-  video {
-    // border: 1px solid red;
-    background-color: $dark-grey;
-
-    margin-bottom: 10px;
-    max-width: 100%;
+  max-width: 100%;
+  .videoBlock__thumbnail {
+    position: relative;
     width: 100%;
-    overflow: hidden;
-
-    max-height: 100px;
+    height: 0;
+    background-color: $dark-grey;
+    padding-bottom: 56.25%;
+  }
+  video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
   }
   .videoBlock__title {
     // border: 1px solid red;
-    max-width: 100%;
-    font-size: 18px;
-    font-weight: 300;
-    margin-bottom: 10px;
-    max-height: 1em;
+    font-size: 17px;
+    font-weight: 400;
+    margin-top: 10px;
+    margin-bottom: 5px;
     overflow: hidden;
+    line-height: normal;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
