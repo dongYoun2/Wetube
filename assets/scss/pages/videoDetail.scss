@@ -71,7 +71,8 @@
           max-width: 1000px;
           font-size: 15px;
         }
-        input[type="submit"] {
+        input[type="submit"],
+        input[type="button"] {
           max-width: 1000px;
           background-color: $button-color;
           color: white;

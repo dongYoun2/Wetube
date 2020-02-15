@@ -58,8 +58,7 @@ export const postUpload = async (req, res) => {
 
 export const videoDetail = async (req, res) => {
   const {
-    params: { id },
-    user
+    params: { id }
   } = req;
   try {
     const video = await Video.findById(id)
@@ -74,7 +73,7 @@ export const videoDetail = async (req, res) => {
     video.views += 1;
     await video.save();
     console.log(video);
-    res.render("videoDetail", { pageTitle: video.title, video, user });
+    res.render("videoDetail", { pageTitle: video.title, video });
   } catch (error) {
     console.log(error);
     res.redirect(routes.home);

@@ -23,14 +23,18 @@ block content
                 a(href=routes.userDetail(video.creator.id))=video.creator.name
         .video__comments
             .my-comment
-                if user
-                    img.u-avatar(src=user.avatarUrl)
+                if loggedUser
+                    img.u-avatar(src=loggedUser.avatarUrl)
                 else
                     img.u-avatar(src="/static/avatarURL_default.png")
                 div.comment-form-container
                     form.add__Comment#jsAddComment
-                        textarea(placeholder="Write a comment")
-                        input(type="submit" value="Post")
+                        if loggedUser
+                            textarea(placeholder="Write a comment")
+                            input(type="submit" value="Post")
+                        else
+                            textarea(placeholder="Log in first to write a comment 🙌" readonly)
+                            input(type="button" value="Post" readonly)
             if video.comments.length === 1
                 span.video__comment-number#jsCommentNumber 1 comment
             else
@@ -43,7 +47,6 @@ block content
                         pre
                             a(href=routes.userDetail(comment.creator.id))=comment.creator.name
                             | 
-                            | #{comment.text} 
+                            | #{comment.text}
     script(type="text/javascript").
-        let data = JSON.stringify(user)
-                //- width="1304" height="748"
+        let me = !{JSON.stringify(loggedUser)}

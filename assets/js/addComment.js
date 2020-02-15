@@ -1,4 +1,5 @@
 import axios from "axios";
+import { IgnorePlugin } from "webpack";
 
 const addCommentForm = document.getElementById("jsAddComment");
 const commentList = document.getElementById("jsCommentList");
@@ -15,11 +16,31 @@ const increaseCommentNumber = () => {
 
 const addComment = comment => {
   const li = document.createElement("li");
+  const anchor1 = document.createElement("a");
+  anchor1.href = `/users/${me._id}`;
+
+  const img = document.createElement("img");
+  img.classList.add("u-avatar");
+  img.src = me.avatarUrl;
+
+  anchor1.appendChild(img);
+
   const pre = document.createElement("pre");
-  pre.innerHTML = comment;
+  const anchor2 = document.createElement("a");
+  anchor2.href = `/users/${me._id}`;
+  anchor2.innerText = me.name;
+
+  pre.appendChild(anchor2);
+  pre.innerHTML += comment;
+
+  li.appendChild(anchor1);
   li.appendChild(pre);
+
   commentList.prepend(li);
-  increaseCommentNumber();
+};
+
+const checkCommentValidation = statusCode => {
+  return statusCode === 200;
 };
 
 const sendComment = async comment => {
@@ -34,8 +55,9 @@ const sendComment = async comment => {
     }
   });
   console.log(response);
-  if (response.status === 200) {
+  if (checkCommentValidation(response.status)) {
     addComment(comment);
+    increaseCommentNumber();
   }
 };
 
@@ -53,5 +75,4 @@ function init() {
 
 if (addCommentForm) {
   init();
-  console.log(data);
 }
