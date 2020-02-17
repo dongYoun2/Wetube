@@ -9,7 +9,6 @@ const s3 = new aws.S3({
   region: "ap-northeast-2"
 });
 
-console.log(s3);
 const multerVideo = multer({
   storage: multerS3({
     s3,

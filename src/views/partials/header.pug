@@ -6,7 +6,7 @@ header.header
                 span wetube
         .header__column
             form(action=routes.search, methoud="get")
-                input#jsSearch(tpye="text", placeholder="Video Search 🔎", name="term")
+                input#jsSearch(tpye="text", placeholder="Video Search 🔎", name="term" required)
         .header__column
             ul
                 if !loggedUser
