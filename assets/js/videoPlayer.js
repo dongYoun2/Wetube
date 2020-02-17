@@ -1,3 +1,5 @@
+import getBlobDuration from "get-blob-duration";
+
 const videoContainer = document.getElementById("jsVideoPlayer");
 const videoPlayer = document.querySelector("#jsVideoPlayer video");
 const playBtn = document.getElementById("jsPlayButton");
@@ -7,6 +9,7 @@ const currentTime = document.getElementById("jsCurrentTime");
 const totalTime = document.getElementById("jsTotalTime");
 const volumeRange = document.getElementById("jsVolume");
 
+// 커스텀 비디오 플레이어 쓸 때 registerView() 는 주석 풀면 안됨!
 // const registerView = () => {
 //   const videoId = window.location.href.split("/videos/")[1];
 //   fetch(`/api/${videoId}/view`, {
@@ -90,8 +93,16 @@ function getCurrentTime() {
   //   if (currentTime.innerHTML === totalTime.innerHTML) clearInterval(playTimer);
 }
 
-function setTotalTime() {
-  const totalTimeString = formatDate(videoPlayer.duration);
+async function setTotalTime() {
+  let totalTimeString = null;
+  if (videoPlayer.duration === Infinity) {
+    const blob = await fetch(videoPlayer.src).then(response => response.blob());
+    const duration = await getBlobDuration(blob);
+    totalTimeString = formatDate(duration);
+  } else {
+    totalTimeString = formatDate(videoPlayer.duration);
+  }
+
   totalTime.innerHTML = totalTimeString;
   //   playTimer = setInterval(getCurrentTime, 100);
 }
@@ -130,13 +141,11 @@ function handleDrag(e) {
 function setVideoSize(event) {
   const width = event.target.videoWidth;
   const height = event.target.videoHeight;
-  // console.log(event);
   const ratio = height / width;
 
   if (ratio <= 0.63) {
     const videoResolution = (ratio * 100).toFixed(2);
     videoContainer.style.paddingBottom = `${videoResolution}%`;
-    // console.log(videoResolution);
   }
 }
 
