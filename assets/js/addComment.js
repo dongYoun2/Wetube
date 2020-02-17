@@ -86,7 +86,7 @@ const sendComment = async comment => {
       comment
     }
   });
-  // console.log(response);
+  console.log(response);
   if (checkCommentSave(response.status)) {
     const {
       data: { commentId }

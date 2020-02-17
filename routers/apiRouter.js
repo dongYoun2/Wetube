@@ -4,7 +4,7 @@ import {
   //   postRegisterView,
   postAddComment,
   postDeleteComment
-} from "../controllers/videoController";
+} from "../controllers/commentController";
 import { onlyPrivate } from "../middlewares";
 
 const apiRouter = express.Router();
