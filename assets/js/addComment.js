@@ -1,20 +1,24 @@
 import axios from "axios";
+import handleDeleteComment from "./deleteComment";
 
 const addCommentForm = document.getElementById("jsAddComment");
 const commentList = document.getElementById("jsCommentList");
-const commentNumber = document.getElementById("jsCommentNumber");
+const commentsNumber = document.getElementById("jsCommentNumber");
 
-const increaseCommentNumber = () => {
-  const increasedNum = parseInt(commentNumber.innerHTML, 10) + 1;
+const increaseCommentsNumber = () => {
+  const increasedNum = parseInt(commentsNumber.innerHTML, 10) + 1;
   if (increasedNum === 1) {
-    commentNumber.innerHTML = `${increasedNum} comment`;
+    commentsNumber.innerHTML = `${increasedNum} comment`;
   } else {
-    commentNumber.innerHTML = `${increasedNum} comments`;
+    commentsNumber.innerHTML = `${increasedNum} comments`;
   }
 };
 
-const addComment = comment => {
+const addComment = (comment, newId) => {
   const li = document.createElement("li");
+  li.classList.add("commentBlock");
+  li.id = newId;
+
   const anchor1 = document.createElement("a");
   anchor1.href = `/users/${me._id}`;
 
@@ -24,28 +28,57 @@ const addComment = comment => {
 
   anchor1.appendChild(img);
 
-  const pre = document.createElement("pre");
+  li.appendChild(anchor1);
+
+  const div1 = document.createElement("div");
+  div1.classList.add("commentBlock__content");
+
+  const div2 = document.createElement("div");
+  div2.classList.add("comment-header");
+
+  const div3 = document.createElement("div");
+  div3.classList.add("comment-creator");
+
   const anchor2 = document.createElement("a");
   anchor2.href = `/users/${me._id}`;
   anchor2.innerText = me.name;
 
-  pre.appendChild(anchor2);
-  pre.innerHTML += `\n${comment}`;
+  div3.appendChild(anchor2);
+  div2.appendChild(div3);
 
-  li.appendChild(anchor1);
-  li.appendChild(pre);
+  const span = document.createElement("span");
+  span.classList.add("comment-deleteBtn");
+  span.innerText = "❌";
+  span.addEventListener("click", handleDeleteComment);
+
+  div2.appendChild(span);
+
+  div1.appendChild(div2);
+
+  const div4 = document.createElement("div");
+  div4.classList.add("comment-date");
+  div4.innerText = new Date().toLocaleString();
+
+  div1.appendChild(div4);
+
+  const pre = document.createElement("pre");
+  pre.innerText = `\n${comment}`;
+
+  div1.appendChild(pre);
+
+  li.appendChild(div1);
 
   commentList.prepend(li);
 };
 
-const checkCommentValidation = statusCode => {
+const checkCommentSave = statusCode => {
   return statusCode === 200;
 };
 
 const sendComment = async comment => {
   const videoId = window.location.href.split("/videos/")[1];
   //   console.log(videoId);
-  console.log(videoId, comment);
+  // console.log(videoId, comment);
   const response = await axios({
     url: `/api/${videoId}/comment`,
     method: "post",
@@ -53,10 +86,14 @@ const sendComment = async comment => {
       comment
     }
   });
-  console.log(response);
-  if (checkCommentValidation(response.status)) {
-    addComment(comment);
-    increaseCommentNumber();
+  // console.log(response);
+  if (checkCommentSave(response.status)) {
+    const {
+      data: { commentId }
+    } = response;
+    // console.log(commentId);
+    addComment(comment, commentId);
+    increaseCommentsNumber();
   }
 };
 

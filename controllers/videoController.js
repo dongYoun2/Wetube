@@ -14,11 +14,6 @@ export const home = async (req, res) => {
 };
 
 export const search = async (req, res) => {
-  console.log(req.body);
-  console.log(req.params);
-  console.log(req.query);
-  console.log(req.user);
-
   const {
     query: { term: searchingBy }
   } = req;
@@ -72,7 +67,7 @@ export const videoDetail = async (req, res) => {
       });
     video.views += 1;
     await video.save();
-    console.log(video);
+    // console.log(video);
     res.render("videoDetail", { pageTitle: video.title, video });
   } catch (error) {
     console.log(error);
@@ -160,7 +155,7 @@ export const postAddComment = async (req, res) => {
     user
   } = req;
   try {
-    console.log(req);
+    // console.log(req);
     if (!user) {
       // login 안 된 경우
       console.log("❌유저가 로그인 안 하고 댓글을 달려고 합니다");
@@ -173,10 +168,30 @@ export const postAddComment = async (req, res) => {
     });
     video.comments.push(newComment.id);
     video.save();
+    res.send({
+      commentId: newComment.id
+    });
   } catch (error) {
     res.status(400);
     console.log(error);
   } finally {
     res.end();
   }
+};
+
+export const postDeleteComment = async (req, res) => {
+  const {
+    params: { id }
+  } = req;
+  try {
+    const comment = await Comment.findById(id);
+    if (comment.creator.toString() !== req.user.id) {
+      throw Error();
+    } else {
+      await Comment.findByIdAndRemove(id);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  res.redirect(routes.home);
 };

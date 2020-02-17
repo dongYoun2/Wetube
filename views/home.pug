@@ -4,9 +4,4 @@ include mixins/videoBlock
 block content
     .home-videos
         each item in videos
-            +videoBlock( {
-                id: item.id,
-                fileUrl: item.fileUrl,
-                title: item.title,
-                views: item.views
-            })
+            +videoBlock(item)

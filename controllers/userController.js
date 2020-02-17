@@ -150,17 +150,13 @@ export const postEditProfile = async (req, res) => {
     file
   } = req;
   // console.log(name, email, file);
-  // console.log(req.user);
-  console.log(file);
   try {
     await User.findByIdAndUpdate(req.user.id, {
       name,
       email,
       avatarUrl: file ? `/${file.path}` : req.user.avatarUrl
     });
-    console.log(req.user);
-    // req.user.name = name;
-    // req.user.email = email;
+    // console.log(req.user);
 
     res.redirect(routes.me);
   } catch (error) {

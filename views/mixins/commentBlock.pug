@@ -1,0 +1,14 @@
+mixin commentBlock(comment = {})
+    li.commentBlock(id=comment.id)
+        a(href=routes.userDetail(comment.creator.id))
+            img.u-avatar(src=comment.creator.avatarUrl)
+        .commentBlock__content
+            .comment-header
+                .comment-creator
+                    a(href=routes.userDetail(comment.creator.id))=comment.creator.name
+                if loggedUser && loggedUser.id === comment.creator.id
+                    span.comment-deleteBtn ❌
+            .comment-date=comment.createdAt.toLocaleString()
+            pre
+            | 
+            | #{comment.text}

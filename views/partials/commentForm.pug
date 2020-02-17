@@ -1,0 +1,13 @@
+.comment-input
+    if loggedUser
+        img.u-avatar(src=loggedUser.avatarUrl)
+    else
+        img.u-avatar(src="/static/avatarURL_default.png")
+    div.comment-form-container
+        form.add__Comment#jsAddComment
+            if loggedUser
+                textarea(placeholder="Write a comment")
+                input(type="submit" value="Post")
+            else
+                textarea(placeholder="Log in first to write a comment 🙌" readonly)
+                input(type="button" value="Post" readonly)
