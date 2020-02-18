@@ -1,6 +1,7 @@
 import passport from "passport";
 import routes from "../routes";
 import User from "../models/User";
+import Video from "../models/Video";
 
 export const getJoin = (req, res) => {
   res.render("join", { pageTitle: "Join" });
@@ -126,9 +127,10 @@ export const logout = (req, res) => {
 
 export const getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate("videos");
+    const user = await User.findById(req.user.id);
+    const videos = await Video.find({ creator: req.user.id });
     // console.log(user);
-    res.render("userDetail", { pageTitle: "User Detail", user });
+    res.render("userDetail", { pageTitle: "User Detail", user, videos });
   } catch (error) {
     req.flash("error", "User not found.");
     res.redirect(routes.home);
@@ -142,8 +144,9 @@ export const userDetail = async (req, res) => {
   } = req;
   try {
     const user = await User.findById(id).populate("videos");
+    const videos = await Video.find({ creator: id });
     // console.log(user);
-    res.render("userDetail", { pageTitle: "User Detail", user });
+    res.render("userDetail", { pageTitle: "User Detail", user, videos });
   } catch (error) {
     res.redirect(routes.home);
     console.log(`userDetail: ${error}`);
@@ -189,6 +192,7 @@ export const postChangePassword = async (req, res) => {
       return;
     }
     await req.user.changePassword(oldPassword, newPassword);
+    req.flash("success", "password changed.");
     res.redirect(routes.me);
   } catch (error) {
     res.status(400);

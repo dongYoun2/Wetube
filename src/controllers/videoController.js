@@ -1,4 +1,3 @@
-import User from "../models/User";
 import Video from "../models/Video";
 import Comment from "../models/Comment";
 import routes from "../routes";
