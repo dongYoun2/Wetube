@@ -1,5 +1,6 @@
 import User from "../models/User";
 import Video from "../models/Video";
+import Comment from "../models/Comment";
 import routes from "../routes";
 
 export const home = async (req, res) => {
@@ -46,8 +47,10 @@ export const postUpload = async (req, res) => {
       description,
       creator: req.user.id
     });
-    req.user.videos.push(newVideo.id);
-    req.user.save();
+    // 아래 두 줄은 user schema 가 video id를 참조하고 있을 시
+    // req.user.videos.push(newVideo.id);
+    // req.user.save();
+
     // console.log(newVideo);
     req.flash("success", "Video uploaded.");
     res.redirect(routes.videoDetail(newVideo.id));
@@ -63,19 +66,12 @@ export const videoDetail = async (req, res) => {
     params: { id }
   } = req;
   try {
-    const video = await Video.findById(id)
-      .populate("creator")
-      .populate({
-        path: "comments",
-        populate: {
-          path: "creator",
-          model: User
-        }
-      });
-    video.views += 1;
+    const video = await Video.findById(id).populate("creator");
+    const comments = await Comment.find({ video: video.id }).populate(
+      "creator"
+    );
     await video.save();
-    // console.log(video);
-    res.render("videoDetail", { pageTitle: video.title, video });
+    res.render("videoDetail", { pageTitle: video.title, video, comments });
   } catch (error) {
     req.flash("error", "Video not found");
     res.redirect(routes.home);
@@ -133,8 +129,11 @@ export const deleteVideo = async (req, res) => {
     } else {
       // video.remove();
       // video.save(); -> video.remove() 하면 이 코드 수행할 필요 X
-
-      await Video.findByIdAndRemove(id);
+      await Video.findByIdAndDelete(id);
+      const response = await Comment.deleteMany({ video: id });
+      if (response.ok !== 1) {
+        throw Error("error on removing certain video's comments");
+      }
       req.flash("success", "Video deleted.");
     }
   } catch (error) {
