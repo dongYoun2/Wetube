@@ -26,6 +26,7 @@ export const postAddComment = async (req, res) => {
     res.send({
       commentId: newComment.id
     });
+    req.flash("success", "Comment saved.");
   } catch (error) {
     res.status(400);
     console.log(`postAddComment: ${error}`);
