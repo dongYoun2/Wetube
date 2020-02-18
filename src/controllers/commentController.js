@@ -16,13 +16,11 @@ export const postAddComment = async (req, res) => {
       console.log("❌유저가 로그인 안 하고 댓글을 달려고 합니다");
       return;
     }
-    const video = await Video.findById(id);
     const newComment = await Comment.create({
       text: comment,
-      creator: user.id
+      creator: user.id,
+      video: id
     });
-    video.comments.push(newComment.id);
-    video.save();
     res.send({
       commentId: newComment.id
     });

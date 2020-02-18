@@ -6,19 +6,7 @@ const UserSchema = new mongoose.Schema({
   email: String,
   avatarUrl: String,
   facebookId: Number,
-  githubId: Number,
-  comments: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Comment"
-    }
-  ],
-  videos: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Video"
-    }
-  ]
+  githubId: Number
 });
 
 ////// 추가 코드
