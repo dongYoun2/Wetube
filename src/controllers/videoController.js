@@ -7,7 +7,7 @@ export const home = async (req, res) => {
     const videos = await Video.find({}).sort({ _id: -1 });
     res.render("home", { pageTitle: "Home", videos });
   } catch (error) {
-    console.log(error);
+    console.log(`home: ${error}`);
     res.render("home", { pageTitle: "Home", videos: [] });
   }
 };
@@ -25,7 +25,7 @@ export const search = async (req, res) => {
       ]
     }).sort({ _id: -1 });
   } catch (error) {
-    console.log(error);
+    console.log(`search: ${error}`);
   }
   res.render("search", { pageTitle: "Search", searchingBy, videos });
 };
@@ -38,17 +38,24 @@ export const postUpload = async (req, res) => {
     body: { title, description },
     file: { location }
   } = req;
-  console.log(location);
-  const newVideo = await Video.create({
-    fileUrl: location,
-    title,
-    description,
-    creator: req.user.id
-  });
-  req.user.videos.push(newVideo.id);
-  req.user.save();
-  // console.log(newVideo);
-  res.redirect(routes.videoDetail(newVideo.id));
+  // console.log(location);
+  try {
+    const newVideo = await Video.create({
+      fileUrl: location,
+      title,
+      description,
+      creator: req.user.id
+    });
+    req.user.videos.push(newVideo.id);
+    req.user.save();
+    // console.log(newVideo);
+    req.flash("success", "Video uploaded.");
+    res.redirect(routes.videoDetail(newVideo.id));
+  } catch (error) {
+    req.flash("error", "Can't upload video.");
+    res.redirect(routes.upload);
+    console.log(`postUpload: ${error}`);
+  }
 };
 
 export const videoDetail = async (req, res) => {
@@ -70,8 +77,9 @@ export const videoDetail = async (req, res) => {
     // console.log(video);
     res.render("videoDetail", { pageTitle: video.title, video });
   } catch (error) {
-    console.log(error);
+    req.flash("error", "Video not found");
     res.redirect(routes.home);
+    console.log(`videoDetail: ${error}`);
   }
 };
 
@@ -87,7 +95,7 @@ export const getEditVideo = async (req, res) => {
       res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
     }
   } catch (error) {
-    console.log(error);
+    console.log(`getEditVideo: ${error}`);
     res.redirect(routes.home);
   }
 };
@@ -101,10 +109,12 @@ export const postEditVideo = async (req, res) => {
     await Video.findByIdAndUpdate(id, { title, description });
     // above line is same as
     // await Video.findOneAndUpdate({ _id: id }, { title, description });
+    req.flash("success", "Video detail updated.");
     res.redirect(routes.videoDetail(id));
   } catch (error) {
-    console.log(error);
+    req.flash("error", "Can't update video detail.");
     res.redirect(routes.home);
+    console.log(`postEditVideo: ${error}`);
   }
 };
 
@@ -115,15 +125,21 @@ export const deleteVideo = async (req, res) => {
   try {
     const video = await Video.findById(id);
     if (video.creator.toString() !== req.user.id) {
-      throw Error();
+      req.flash("error", "Can't delete others' video.");
+      console.log(
+        "deleteVideo: someone tries to delete other's video through URL. "
+      );
+      // throw Error("not allowed to delete other's video through URL.");
     } else {
       // video.remove();
       // video.save(); -> video.remove() 하면 이 코드 수행할 필요 X
 
       await Video.findByIdAndRemove(id);
+      req.flash("success", "Video deleted.");
     }
   } catch (error) {
-    console.log(error);
+    req.flash("error", "Can't delete video.");
+    console.log(`deleteVideo: ${error}`);
   }
   res.redirect(routes.home);
 };

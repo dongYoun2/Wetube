@@ -28,7 +28,7 @@ export const postAddComment = async (req, res) => {
     });
   } catch (error) {
     res.status(400);
-    console.log(error);
+    console.log(`postAddComment: ${error}`);
   } finally {
     res.end();
   }
@@ -46,7 +46,7 @@ export const postDeleteComment = async (req, res) => {
       await Comment.findByIdAndRemove(id);
     }
   } catch (error) {
-    console.log(error);
+    console.log(`postDeleteCommentt: ${error}`);
   }
   res.redirect(routes.home);
 };

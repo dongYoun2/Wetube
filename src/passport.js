@@ -28,8 +28,9 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
-      callbackURL: `https://blooming-retreat-93362.herokuapp.com${routes.facebookCallback}`,
-      // callbackURL: `https://green-warthog-47.localtunnel.me${routes.facebookCallback}`,
+      callbackURL: process.env.PRODUCTION
+        ? `https://blooming-retreat-93362.herokuapp.com${routes.facebookCallback}`
+        : `https://green-warthog-47.localtunnel.me${routes.facebookCallback}`,
       profileFields: ["id", "displayName", "photos", "email"],
       scope: ["public_profile", "email"]
     },

@@ -4,11 +4,11 @@ include mixins/commentBlock
 
 block content
     .video-detail__container
-        //- .videoPlayer#jsVideoPlayer
-        //-     video(src=video.fileUrl controls)
-        +videoPlayer({
-            src:video.fileUrl
-        })
+        .videoPlayer#jsVideoPlayer
+            video(src=video.fileUrl controls)
+        //- +videoPlayer({
+        //-     src:video.fileUrl
+        //- })
         .video__info
             if loggedUser && video.creator.id === loggedUser.id
                 a(href=routes.editVideo(video.id)) 
