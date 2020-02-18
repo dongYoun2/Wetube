@@ -94,15 +94,14 @@ function getCurrentTime() {
 }
 
 async function setTotalTime() {
-  let totalTimeString = null;
-  if (videoPlayer.duration === Infinity) {
+  let duration = null;
+  if (!Number.isFinite(videoPlayer.duration)) {
     const blob = await fetch(videoPlayer.src).then(response => response.blob());
-    const duration = await getBlobDuration(blob);
-    totalTimeString = formatDate(duration);
+    duration = await getBlobDuration(blob);
   } else {
-    totalTimeString = formatDate(videoPlayer.duration);
+    duration = videoPlayer.duration;
   }
-
+  const totalTimeString = formatDate(duration);
   totalTime.innerHTML = totalTimeString;
   //   playTimer = setInterval(getCurrentTime, 100);
 }
