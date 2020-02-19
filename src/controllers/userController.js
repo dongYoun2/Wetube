@@ -175,7 +175,7 @@ export const postEditProfile = async (req, res) => {
   } = req;
   try {
     const existUser = await User.findOne({ email });
-    if (existUser) {
+    if (existUser && existUser.id !== req.user.id) {
       req.flash("error", "Email already exists. User other email.");
       res.redirect(`/users/${routes.editProfile}`);
       return;

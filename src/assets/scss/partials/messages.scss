@@ -21,7 +21,7 @@
   z-index: 9;
   padding: 18px;
   text-align: center;
-  animation: flashAnimation 2.5s ease-in-out forwards;
+  animation: flashAnimation 0.5s ease-in-out forwards;
   // animation: flashAnimation 3.5s ease-in-out forwards;
   &.error {
     background-color: #e74c3c;
