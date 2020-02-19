@@ -27,7 +27,7 @@ export const postAddComment = async (req, res) => {
     req.flash("success", "Comment saved.");
   } catch (error) {
     res.status(400);
-    console.log(`postAddComment: ${error}`);
+    console.log("postAddComment: ", error);
   } finally {
     res.end();
   }
@@ -45,7 +45,7 @@ export const postDeleteComment = async (req, res) => {
       await Comment.findByIdAndRemove(id);
     }
   } catch (error) {
-    console.log(`postDeleteCommentt: ${error}`);
+    console.log("postDeleteCommentt: ", error);
   }
   res.redirect(routes.home);
 };

@@ -77,7 +77,6 @@ const checkCommentSave = statusCode => {
 
 const sendComment = async comment => {
   const videoId = window.location.href.split("/videos/")[1];
-  //   console.log(videoId);
   // console.log(videoId, comment);
   const response = await axios({
     url: `/api/${videoId}/comment`,

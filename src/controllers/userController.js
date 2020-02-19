@@ -19,17 +19,29 @@ export const postJoin = async (req, res, next) => {
     // res.redirect(routes.join); // above, Nico code. This, my code.
   } else {
     try {
+      const existUser = await User.findOne({ email });
+      if (existUser) {
+        if (existUser.githubId) {
+          req.flash("error", "You already have an account with Github.");
+          res.redirect(routes.join);
+        } else if (existUser.facebookId) {
+          req.flash("error", "You already have an account with Facebook.");
+          res.redirect(routes.join);
+        } else {
+          req.flash("error", "You already have Wetube account.");
+          res.redirect(routes.join);
+        }
+        return;
+      }
       const user = await User({
         name,
         email,
         avatarUrl: process.env.DEFAULT_AVATAR_URL
       });
       await User.register(user, password);
-      // console.log(user);
       next();
     } catch (error) {
       console.log("PostJoin: ", error);
-      req.flash("error", error.message);
       res.redirect(routes.join);
     }
   }
@@ -58,15 +70,11 @@ export const githubVerifyCallback = async (_, __, profile, cb) => {
     if (user) {
       return cb(null, user);
     }
-    if (!email) {
-      throw Error("Allow your Github email public first.");
-    }
-
     if (await User.findOne({ email })) {
-      throw Error("you already have account.");
+      throw Error("You already have Wetube account.");
     }
     const newUser = await User.create({
-      email,
+      email: email || undefined,
       name: name || id,
       githubId: id,
       avatarUrl
@@ -138,7 +146,7 @@ export const getMe = async (req, res) => {
   } catch (error) {
     req.flash("error", "User not found.");
     res.redirect(routes.home);
-    console.log(`getMe: ${error}`);
+    console.log("getMe: ", error);
   }
 };
 
@@ -153,7 +161,7 @@ export const userDetail = async (req, res) => {
     res.render("userDetail", { pageTitle: "User Detail", user, videos });
   } catch (error) {
     res.redirect(routes.home);
-    console.log(`userDetail: ${error}`);
+    console.log("userDetail: ", error);
   }
 };
 
@@ -165,22 +173,27 @@ export const postEditProfile = async (req, res) => {
     body: { name, email },
     file
   } = req;
-  // console.log(name, email, file);
   try {
+    const existUser = await User.findOne({ email });
+    if (existUser) {
+      req.flash("error", "Email already exists. User other email.");
+      res.redirect(`/users/${routes.editProfile}`);
+      return;
+    }
     await User.findByIdAndUpdate(req.user.id, {
       name,
-      email,
+      email: email || null,
       avatarUrl: file ? file.location : req.user.avatarUrl
     });
-    // console.log(req.user);
     req.flash("success", "Profile updated");
     res.redirect(routes.me);
   } catch (error) {
     req.flash("error", "Can't update profile.");
-    res.redirect(routes.editProfile);
-    console.log(`postEditProfile: ${error}`);
+    res.redirect(`/users/${routes.editProfile}`);
+    console.log("postEditProfile: ", error);
   }
 };
+
 export const getChangePassword = (req, res) =>
   res.render("changePassword", { pageTitle: "Change Password" });
 
@@ -202,6 +215,6 @@ export const postChangePassword = async (req, res) => {
     res.status(400);
     req.flash("error", "Can't change password.");
     res.redirect(`/users${routes.changePassword}`);
-    console.log(`postChangePassword: ${error}`);
+    console.log("postChangePassword: ", error);
   }
 };

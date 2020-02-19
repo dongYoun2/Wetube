@@ -7,7 +7,7 @@ export const home = async (req, res) => {
     const videos = await Video.find({}).sort({ _id: -1 });
     res.render("home", { pageTitle: "Home", videos });
   } catch (error) {
-    console.log(`home: ${error}`);
+    console.log("home: ", error);
     res.render("home", { pageTitle: "Home", videos: [] });
   }
 };
@@ -25,7 +25,7 @@ export const search = async (req, res) => {
       ]
     }).sort({ _id: -1 });
   } catch (error) {
-    console.log(`search: ${error}`);
+    console.log("search: ", error);
   }
   res.render("search", { pageTitle: "Search", searchingBy, videos });
 };
@@ -56,7 +56,7 @@ export const postUpload = async (req, res) => {
   } catch (error) {
     req.flash("error", "Can't upload video.");
     res.redirect(routes.upload);
-    console.log(`postUpload: ${error}`);
+    console.log("postUpload: ", error);
   }
 };
 
@@ -75,7 +75,7 @@ export const videoDetail = async (req, res) => {
   } catch (error) {
     req.flash("error", "Video not found");
     res.redirect(routes.home);
-    console.log(`videoDetail: ${error}`);
+    console.log("videoDetail: ", error);
   }
 };
 
@@ -91,7 +91,7 @@ export const getEditVideo = async (req, res) => {
       res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
     }
   } catch (error) {
-    console.log(`getEditVideo: ${error}`);
+    console.log("getEditVideo: ", error);
     res.redirect(routes.home);
   }
 };
@@ -110,7 +110,7 @@ export const postEditVideo = async (req, res) => {
   } catch (error) {
     req.flash("error", "Can't update video detail.");
     res.redirect(routes.home);
-    console.log(`postEditVideo: ${error}`);
+    console.log("postEditVideo: ", error);
   }
 };
 
@@ -138,7 +138,7 @@ export const deleteVideo = async (req, res) => {
     }
   } catch (error) {
     req.flash("error", "Can't delete video.");
-    console.log(`deleteVideo: ${error}`);
+    console.log("deleteVideo: ", error);
   }
   res.redirect(routes.home);
 };
