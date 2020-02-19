@@ -45,13 +45,19 @@ const getVideo = async () => {
     streamObject = stream;
     // videoPreview.classList.add("show");
     videoPreview.style.display = "inline";
+    // recorderContainer.removeChild(cameraBtn);
     cameraBtn.style.display = "none";
     recordBtn.style.display = "inline-block";
 
     recordBtn.addEventListener("click", startRecording);
     // startRecording();
   } catch (error) {
-    recordBtn.innerHTML = "😥Can't Record";
+    // recorderContainer.removeChild(cameraBtn);
+    cameraBtn.style.display = "none";
+    const div = document.createElement("div");
+    div.classList.add("error-message");
+    div.innerHTML = "Can't record 😥";
+    recorderContainer.prepend(div);
   } finally {
     cameraBtn.removeEventListener("click", getVideo);
   }
