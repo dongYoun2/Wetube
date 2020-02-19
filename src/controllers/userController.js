@@ -28,8 +28,9 @@ export const postJoin = async (req, res, next) => {
       // console.log(user);
       next();
     } catch (error) {
-      console.log(`PostJoin: ${error}`);
-      res.redirect(routes.home);
+      console.log("PostJoin: ", error);
+      req.flash("error", error.message);
+      res.redirect(routes.join);
     }
   }
 };
@@ -41,6 +42,7 @@ export const postLogin = passport.authenticate("local", {
   failureRedirect: routes.login,
   successRedirect: routes.home,
   successFlash: "Welcome",
+  // failureFlash: true
   failureFlash: "Can't log in. Check email and/or password."
 });
 
@@ -48,30 +50,31 @@ export const githubLogin = passport.authenticate("github");
 
 export const githubVerifyCallback = async (_, __, profile, cb) => {
   const {
-    _json: { id, avatar_url: avatarUrl, email }
-  } = profile;
-  let {
-    _json: { name }
+    _json: { id, avatar_url: avatarUrl, email, name }
   } = profile;
   try {
-    const user = await User.findOne({ email });
+    // console.log(profile);
+    const user = await User.findOne({ githubId: id });
     if (user) {
-      user.githubId = id;
-      user.save();
-      // console.log(user);
       return cb(null, user);
     }
-    if (name === null) name = id;
+    if (!email) {
+      throw Error("Allow your Github email public first.");
+    }
+
+    if (await User.findOne({ email })) {
+      throw Error("you already have account.");
+    }
     const newUser = await User.create({
       email,
-      name,
+      name: name || id,
       githubId: id,
       avatarUrl
     });
-    // console.log(user);
     return cb(null, newUser);
   } catch (error) {
-    return cb(error);
+    console.log("githubVerifyCallback: ", error);
+    return cb(null, false, { message: error.message });
   }
 };
 
@@ -79,36 +82,36 @@ export const postGithubLogin = passport.authenticate("github", {
   failureRedirect: routes.login,
   successRedirect: routes.home,
   successFlash: "Welcome",
-  failureFlash: "Can't log in with Github. Check Github ID or password."
+  failureFlash: true
+  // failureFlash: "Can't log in with Github. Check Github ID or password."
 });
 
 export const facebookLogin = passport.authenticate("facebook");
 
 export const facebookVerifyCallback = async (_, __, profile, cb) => {
   const {
-    _json: { id, email }
-  } = profile;
-  let {
-    _json: { name }
+    _json: { id, email, name }
   } = profile;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ facebookId: id });
     if (user) {
-      user.facebookId = id;
-      user.avatarUrl = `https://graph.facebook.com/${id}/picture?type=large`;
-      user.save();
       return cb(null, user);
     }
-    if (name === null) name = id;
+    if (!email) {
+      throw Error("Allow your Facebook email public first.");
+    }
+    if (await User.findOne({ email })) {
+      throw Error("you already have account.");
+    }
     const newUser = await User.create({
       email,
-      name,
+      name: name || id,
       facebookId: id,
       avatarUrl: `https://graph.facebook.com/${id}/picture?type=large`
     });
     return cb(null, newUser);
   } catch (error) {
-    return cb(error);
+    return cb(null, false, { message: error.message });
   }
 };
 
@@ -116,7 +119,8 @@ export const postFacebookLogin = passport.authenticate("facebook", {
   failureRedirect: routes.login,
   successRedirect: routes.home,
   successFlash: "Welcome",
-  failureFlash: "Can't log in with Facebook. Check Github ID or password."
+  failureFlash: true
+  // failureFlash: "Can't log in with Facebook. Check Github ID or password."
 });
 
 export const logout = (req, res) => {

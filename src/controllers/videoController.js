@@ -69,6 +69,7 @@ export const videoDetail = async (req, res) => {
     const comments = await Comment.find({ video: video.id }).populate(
       "creator"
     );
+    video.views += 1;
     await video.save();
     res.render("videoDetail", { pageTitle: video.title, video, comments });
   } catch (error) {
