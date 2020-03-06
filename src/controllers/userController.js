@@ -11,7 +11,9 @@ export const postJoin = async (req, res, next) => {
   const {
     body: { name, email, password, password2 }
   } = req;
-
+  const {
+    locals: { defaultAvatarUrl }
+  } = res;
   if (password !== password2) {
     req.flash("error", "Passwords don't match.");
     res.status(400);
@@ -36,7 +38,7 @@ export const postJoin = async (req, res, next) => {
       const user = await User({
         name,
         email,
-        avatarUrl: process.env.DEFAULT_AVATAR_URL
+        avatarUrl: defaultAvatarUrl
       });
       await User.register(user, password);
       next();

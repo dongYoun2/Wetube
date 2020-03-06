@@ -35,6 +35,8 @@ export const localsMiddleware = (req, res, next) => {
   res.locals.siteName = "WeTube";
   res.locals.routes = routes;
   res.locals.loggedUser = req.user || null;
+  res.locals.defaultAvatarUrl =
+    "https://wetube-dy.s3.ap-northeast-2.amazonaws.com/avatars/defaultAvatar.png";
   // console.log(req.user);
   next();
 };

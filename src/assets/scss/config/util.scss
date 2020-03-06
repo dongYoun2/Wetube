@@ -1,6 +1,6 @@
 .u-avatar {
   // height: 60px;
   // width: 80px;
-  background-image: url("/static/avatarUrl_default.png");
+  background-image: url($defaultAvatarUrl);
   border-radius: 50%;
 }
